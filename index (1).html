@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZYGO CRM v2</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--g:#063a20;--l:#c5dc3a;--bg:#f8f9f5;--t:#12281c;--m:#6b7f73;--bd:#e3e8de;--r:#c0392b}
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,sans-serif;color:var(--t);background:var(--bg)}
+#app{display:flex;min-height:100vh}aside{width:200px;background:var(--g);color:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.lo{font-size:20px;margin-bottom:14px}.lo small{display:block;font-size:10px;opacity:.6;letter-spacing:.1em}
+.nv{background:none;border:0;color:#fff;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;font:inherit}.nv.on{background:var(--l);color:var(--g);font-weight:600}
+.ft{margin-top:auto;font-size:12px}main{flex:1;padding:24px;min-width:0}header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+h2{margin:0;color:var(--g)}h2 small{color:var(--m);font-weight:400}
+input,select,textarea{font:inherit;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:#fff;width:100%}header input,header select{width:auto}
+.b{background:var(--l);color:var(--g);border:0;padding:9px 14px;border-radius:8px;font-weight:600;cursor:pointer}.b.g{background:#e9eee4}.b.s{padding:4px 9px;font-size:12px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--m);text-align:left;padding:10px}td{padding:10px;border-top:1px solid var(--bd);vertical-align:top}
+tbody tr{cursor:pointer}tbody tr:hover{background:#f3f7ea}small{color:var(--m)}
+.ch{display:inline-block;background:#eef3e6;color:var(--g);border-radius:99px;padding:2px 9px;font-size:12px;margin:1px 2px 1px 0}.rd{background:#fde8e5;color:var(--r)}.gr{background:#dff3e3}.am{background:#fff3cd}
+#dr{position:fixed;right:0;top:0;bottom:0;width:min(560px,100%);background:#fff;box-shadow:-8px 0 30px #0003;padding:20px;overflow:auto;display:none;z-index:5}
+.tabs{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap}.tabs button{border:0;background:#eef3e6;padding:6px 12px;border-radius:99px;cursor:pointer;font:inherit}.tabs .on{background:var(--g);color:#fff}
+.it{border:1px solid var(--bd);border-radius:10px;padding:10px;margin:8px 0}.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 10px;margin:10px 0}.kv span{color:var(--m)}
+.ov{position:fixed;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;z-index:9;padding:12px}.mc{background:#fff;border-radius:14px;padding:20px;width:min(480px,100%);max-height:92vh;overflow:auto}
+.fl{display:block;margin:10px 0;font-size:12px;color:var(--m)}.fl>*{margin-top:4px;color:var(--t)}.mu{display:grid;gap:4px}.mu label{display:flex;gap:6px;align-items:center;color:var(--t);font-size:13px}.mu input{width:auto}
+.ac{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}.lg{margin:auto;width:min(340px,92%);padding:30px}.lg form{display:grid;gap:10px}.lg h1{color:var(--g)}
+#ts{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20}#ts div{background:var(--g);color:#fff;padding:9px 16px;border-radius:8px;margin-top:6px}#ts .e{background:var(--r)}
+@media(max-width:760px){#app{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap}.ft{margin:0 0 0 auto}main{padding:12px}td:nth-child(n+4),th:nth-child(n+4){display:none}}
+</style></head><body><div id="app"></div>
+<script>
+const SB_URL='https://taeavxdlfbgtevadugnk.supabase.co',SB_KEY='sb_publishable_xT9fTOhuFbSNNFjYkPJIEA__Olfg6tv';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const $=s=>document.querySelector(s),h=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ETAPAS=['Novo Lead','Em Qualificação','MQL Qualificado (SQL)','Reunião de Diagnóstico Agendada','Proposta Comercial Enviada','Negociação / Ajustes','Ganho','Perdido'];
+const ORIG0=['Website','LinkedIn','Instagram','Facebook','Evento','Indicação','Google Ads'];
+const S={view:'dash',q:'',fe:'',users:[],servicos:[],origens:ORIG0};let CUR={};
+const fd=d=>d?new Date(d).toLocaleString('pt-PT',{dateStyle:'short',timeStyle:'short'}):'—';
+const kz=n=>new Intl.NumberFormat('pt-PT').format(n||0)+' Kz';
+function toast(m,e){const d=document.createElement('div');d.textContent=m;if(e)d.className='e';$('#ts').appendChild(d);setTimeout(()=>d.remove(),3500)}
+async function q(p){const{data,error}=await p;if(error){toast(error.message,1);throw error}return data}
+const wa=t=>t?`<a href="https://wa.me/${h(t.replace('+',''))}" target="_blank" onclick="event.stopPropagation()">WhatsApp</a>`:'';
+const own=l=>(S.users.find(u=>u.id==l.proprietario_id)||{}).full_name||l.proprietario||'—';
+const sla=l=>(l.primeira_resposta_em||['Ganho','Perdido'].includes(l.pipeline_stage))?null:Math.round((Date.now()-new Date(l.data_entrada))/36e5);
+
+/* ---------- arranque / login ---------- */
+async function init(){
+ const{data:{session}}=await sb.auth.getSession();if(!session)return login();
+ const me=await q(sb.from('users').select('*').eq('id',session.user.id));S.me=me[0];
+ if(!S.me||!S.me.ativo){$('#app').innerHTML='<div class="lg"><h1>Sem acesso</h1><p>Esta conta não está activa no CRM.</p><button class="b" onclick="sb.auth.signOut().then(()=>location.reload())">Sair</button></div>';return}
+ const ok=p=>p.then(r=>r.error?null:r.data);
+ S.users=await q(sb.from('users').select('id,full_name,role').eq('ativo',true).order('full_name'));
+ S.servicos=(await ok(sb.from('servicos').select('*').eq('ativo',true).order('ordem')))||[];
+ const o=await ok(sb.from('origens').select('nome').eq('ativo',true).order('ordem'));if(o&&o.length)S.origens=o.map(x=>x.nome);
+ go(S.view)}
+function login(){$('#app').innerHTML=`<div class="lg"><form onsubmit="return doLogin(event)"><h1>ZYGO CRM</h1><input id="em" type="email" placeholder="Email" required><input id="pw" type="password" placeholder="Palavra-passe" required><button class="b">Entrar</button><small id="le"></small></form></div>`}
+async function doLogin(e){e.preventDefault();const{error}=await sb.auth.signInWithPassword({email:$('#em').value,password:$('#pw').value});if(error)$('#le').textContent='Credenciais inválidas';else init();return false}
+function shell(c){return`<aside><b class="lo">ZYGO<small>CRM V2</small></b>${[['dash','Dashboard'],['leads','Leads'],['pipe','Pipeline'],['clientes','Clientes'],['hoje','Hoje']].concat(adm()?[['admin','Admin']]:[]).map(([v,t])=>`<button class="nv ${S.view==v?'on':''}" onclick="go('${v}')">${t}</button>`).join('')}<div class="ft">${h(S.me.full_name)}<br><small style="color:#fffa">${h(S.me.role)}</small><button class="nv" onclick="sb.auth.signOut().then(()=>location.reload())">Sair</button></div></aside><main>${c}</main><div id="dr"></div><div id="md"></div><div id="ts"></div>`}
+function go(v){S.view=v;closeDr();({dash:viewDash,leads:viewLeads,pipe:viewPipe,clientes:viewClientes,hoje:viewHoje,admin:viewAdmin})[v]()}
+function closeDr(){const d=$('#dr');if(d)d.style.display='none'}
+
+/* ---------- modal genérico ---------- */
+function fld(f){const i=`id="f_${f.k}"`;let c;
+ if(f.t=='select')c=`<select ${i}>${f.r?'':'<option value=""></option>'}${f.o.map(([v,l])=>`<option value="${h(v)}" ${v==f.v?'selected':''}>${h(l)}</option>`).join('')}</select>`;
+ else if(f.t=='area')c=`<textarea ${i} rows="3">${h(f.v)}</textarea>`;
+ else if(f.t=='multi')c=`<div ${i} class="mu">${f.o.map(([v,l])=>`<label><input type="checkbox" value="${h(v)}">${h(l)}</label>`).join('')}</div>`;
+ else c=`<input ${i} type="${f.t||'text'}" value="${h(f.v)}">`;
+ return`<div class="fl">${h(f.l)}${f.r?' *':''}${c}</div>`}
+function modal(title,fields,ok){
+ $('#md').innerHTML=`<div class="ov"><div class="mc"><h3>${h(title)}</h3>${fields.map(fld).join('')}<div class="ac"><button class="b g" onclick="$('#md').innerHTML=''">Cancelar</button><button class="b" id="mk">Guardar</button></div></div></div>`;
+ $('#mk').onclick=async()=>{const v={};
+  for(const f of fields){const e=$('#f_'+f.k);v[f.k]=f.t=='multi'?[...e.querySelectorAll('input:checked')].map(i=>i.value):(e.value===''?null:e.value);
+   if(f.r&&(v[f.k]==null||v[f.k].length==0))return toast('Preencha: '+f.l,1)}
+  $('#mk').disabled=true;try{await ok(v);$('#md').innerHTML=''}catch(e){$('#mk').disabled=false}}}
+
+/* ---------- LEADS ---------- */
+async function viewLeads(){
+ if(S.view=='pipe')return viewPipe();
+ $('#app').innerHTML=shell(`<header><h2>Leads <small id="cn"></small></h2><div style="display:flex;gap:8px;flex-wrap:wrap"><input placeholder="Pesquisar…" value="${h(S.q)}" oninput="S.q=this.value;rowsL()"><select onchange="S.fe=this.value;rowsL()"><option value="">Todas as etapas</option>${ETAPAS.map(e=>`<option ${e==S.fe?'selected':''}>${e}</option>`).join('')}</select><button class="b g" onclick="csv()">CSV</button><button class="b" onclick="newLead()">+ Novo lead</button></div></header><table><thead><tr><th>Lead</th><th>Serviços</th><th>Etapa</th><th>Responsável</th><th>SLA</th><th></th></tr></thead><tbody id="tb"><tr><td colspan="6">A carregar…</td></tr></tbody></table>`);
+ S.leads=await q(sb.from('leads').select('*,lead_servicos(servicos(nome))').is('deleted_at',null).order('created_at',{ascending:false}));rowsL()}
+const svc=l=>(l.lead_servicos||[]).map(x=>`<span class="ch">${h(x.servicos?.nome)}</span>`).join('')||h(l.servico_interesse);
+function rowsL(){const t=S.q.toLowerCase();
+ const L=S.leads.filter(l=>(!S.fe||l.pipeline_stage==S.fe)&&`${l.nome_completo} ${l.empresa} ${l.email} ${l.telefone}`.toLowerCase().includes(t));
+ $('#cn').textContent=L.length;
+ $('#tb').innerHTML=L.map(l=>{const s=sla(l);return`<tr onclick="openLead('${l.id}')"><td><b>${h(l.nome_completo)}</b><br><small>${h(l.empresa)}</small></td><td>${svc(l)}</td><td><span class="ch">${h(l.pipeline_stage)}</span></td><td>${h(own(l))}</td><td>${s==null?'':`<span class="ch ${s>24?'rd':'gr'}">${s}h</span>`}</td><td>${wa(l.telefone_wa)}</td></tr>`}).join('')||'<tr><td colspan="6">Sem resultados.</td></tr>'}
+function newLead(){
+ modal('Novo lead',[
+  {k:'nome_completo',l:'Nome completo',r:1},{k:'empresa',l:'Empresa',r:1},{k:'email',l:'Email',t:'email',r:1},{k:'telefone',l:'Telefone (+244 9XX XXX XXX)',r:1},
+  {k:'origem',l:'Origem',t:'select',r:1,o:S.origens.map(o=>[o,o])},
+  {k:'servicos',l:'Serviços de interesse (um ou mais)',t:'multi',r:1,o:S.servicos.map(s=>[s.id,s.nome])},
+  {k:'prop',l:'Responsável',t:'select',r:1,o:S.users.map(u=>[u.id,u.full_name]),v:S.me.id},
+  {k:'canal_preferido',l:'Canal preferido',t:'select',o:[['whatsapp','WhatsApp'],['telefone','Telefone'],['email','Email'],['presencial','Presencial']]},
+  {k:'valor',l:'Valor estimado (Kz)',t:'number'}],
+ async v=>{
+  const d=await q(sb.rpc('verificar_duplicado',{p_email:v.email,p_telefone:v.telefone}));
+  if(d.length&&!confirm('Possível duplicado: '+d.map(x=>x.nome+' ('+x.tipo+')').join(', ')+'. Criar mesmo assim?'))throw 0;
+  const u=S.users.find(x=>x.id==v.prop);
+  const l=await q(sb.from('leads').insert({nome_completo:v.nome_completo,empresa:v.empresa,email:v.email,telefone:v.telefone,origem:v.origem,servico_interesse:'',data_entrada:new Date().toISOString(),proprietario:u.role,proprietario_id:u.id,pipeline_stage:'Novo Lead',canal_preferido:v.canal_preferido,valor_estimado_kz:v.valor}).select('id').single());
+  await q(sb.from('lead_servicos').insert(v.servicos.map(s=>({lead_id:l.id,servico_id:s}))));
+  toast('Lead criado');viewLeads()})}
+function drOpen(title,tabs,tab,fn,body){const d=$('#dr');d.style.display='block';
+ d.innerHTML=`<button class="b g s" onclick="closeDr()" style="float:right">Fechar</button><h3 style="margin:0;color:var(--g)">${title}</h3><div class="tabs">${tabs.map(([k,t])=>`<button class="${k==tab?'on':''}" onclick="${fn}('${CUR.id}','${k}')">${t}</button>`).join('')}</div>${body}`}
+const tl=(rows,f)=>rows.length?rows.map(f).join(''):'<p><small>Sem registos.</small></p>';
+async function openLead(id,tab='res'){CUR={id,tab};const l=S.leads.find(x=>x.id==id);let b='';
+ if(tab=='res'){
+  b=`<div class="kv"><span>Etapa</span><select onchange="setStage('${id}',this.value)">${ETAPAS.map(e=>`<option ${e==l.pipeline_stage?'selected':''}>${e}</option>`).join('')}</select>
+  <span>Contacto</span><div>${h(l.email)}<br>${h(l.telefone)} ${wa(l.telefone_wa)}</div><span>Origem</span><div>${h(l.origem)}</div>
+  <span>Responsável</span><div>${h(own(l))}</div><span>Valor estimado</span><div>${l.valor_estimado_kz?kz(l.valor_estimado_kz):'—'}</div>
+  <span>1.ª resposta</span><div>${fd(l.primeira_resposta_em)}</div></div><b>Serviços</b><div>${(l.lead_servicos||[]).map(x=>`<span class="ch">${h(x.servicos?.nome)}</span>`).join('')||'—'}</div>
+  <p><button class="b s g" onclick="addLeadSvc('${id}')">+ Serviço</button> <button class="b s g" onclick="newTask('lead_id','${id}')">+ Tarefa</button> <button class="b s g" onclick="editLead('${id}')">Editar</button></p>${l.cliente_id?'<p class="ch gr">Já é cliente</p>':''}`}
+ if(tab=='act'){const r=await q(sb.from('atividades').select('*,users(full_name)').eq('lead_id',id).order('realizada_em',{ascending:false}));
+  b=`<button class="b s" onclick="newAct('lead_id','${id}')">+ Registar contacto</button>`+tl(r,a=>`<div class="it"><span class="ch">${a.tipo}</span> <small>${fd(a.realizada_em)} · ${h(a.users?.full_name)}</small><br>${h(a.resumo)}</div>`)}
+ if(tab=='reu'){b=await meetList('lead_id',id)}
+ drOpen(h(l.nome_completo)+` <small>${h(l.empresa)}</small>`,[['res','Resumo'],['act','Contactos'],['reu','Reuniões']],tab,'openLead',b)}
+async function setStage(id,v){const u={pipeline_stage:v};
+ if(v=='Perdido'){const m=prompt('Motivo da perda?');if(!m)return openLead(id);u.motivo_perda=m}
+ await q(sb.from('leads').update(u).eq('id',id));toast(v=='Ganho'?'Ganho! Cliente criado automaticamente.':'Etapa actualizada');
+ S.leads=await q(sb.from('leads').select('*,lead_servicos(servicos(nome))').is('deleted_at',null).order('created_at',{ascending:false}));rowsL();openLead(id)}
+function addLeadSvc(id){modal('Adicionar serviço',[{k:'s',l:'Serviço',t:'select',r:1,o:S.servicos.map(s=>[s.id,s.nome])}],async v=>{
+ await q(sb.from('lead_servicos').insert({lead_id:id,servico_id:v.s}));await viewLeads();openLead(id)})}
+function newAct(col,id){modal('Registar contacto',[{k:'tipo',l:'Tipo',t:'select',r:1,o:[['chamada','Chamada'],['whatsapp','WhatsApp'],['email','Email'],['visita','Visita'],['nota','Nota']]},{k:'resumo',l:'Resumo',t:'area',r:1}],async v=>{
+ await q(sb.from('atividades').insert({[col]:id,tipo:v.tipo,resumo:v.resumo}));toast('Registado');
+ if(col=='lead_id'){await viewLeads();openLead(id,'act')}else openCli(id,'res')})}
+
+/* ---------- reuniões (leads e clientes) ---------- */
+async function meetList(col,id){const r=await q(sb.from('reunioes').select('*').eq(col,id).order('data_hora',{ascending:false}));
+ return`<button class="b s" onclick="newMeet('${col}','${id}')">+ Reunião</button>`+tl(r,m=>`<div class="it"><b>${h(m.titulo)}</b> <span class="ch">${m.tipo}</span><span class="ch ${m.estado=='agendada'?'am':''}">${m.estado}</span><br><small>${fd(m.data_hora)}${m.modalidade?' · '+m.modalidade:''}${m.sentimento?' · '+m.sentimento:''}</small>
+ ${m.resumo?`<p><b>Resumo:</b> ${h(m.resumo)}</p>`:''}${m.decisoes?`<p><b>Decisões:</b> ${h(m.decisoes)}</p>`:''}${m.proximos_passos?`<p><b>Próximos passos:</b> ${h(m.proximos_passos)}</p>`:''}</div>`)}
+function newMeet(col,id){modal('Nova reunião',[
+ {k:'tipo',l:'Tipo',t:'select',r:1,o:[['diagnostico','Diagnóstico'],['arranque','Arranque'],['acompanhamento','Acompanhamento'],['revisao','Revisão'],['renovacao','Renovação'],['proposta','Proposta'],['suporte','Suporte'],['outro','Outro']]},
+ {k:'titulo',l:'Título',r:1},{k:'data_hora',l:'Data e hora',t:'datetime-local',r:1},
+ {k:'estado',l:'Estado',t:'select',r:1,o:[['realizada','Realizada'],['agendada','Agendada']]},
+ {k:'modalidade',l:'Modalidade',t:'select',o:[['presencial','Presencial'],['video','Vídeo'],['telefone','Telefone']]},
+ {k:'resumo',l:'Resumo',t:'area'},{k:'decisoes',l:'Decisões',t:'area'},{k:'proximos_passos',l:'Próximos passos',t:'area'},
+ {k:'sentimento',l:'Sentimento do cliente',t:'select',o:[['positivo','Positivo'],['neutro','Neutro'],['negativo','Negativo']]}],
+ async v=>{v.data_hora=new Date(v.data_hora).toISOString();await q(sb.from('reunioes').insert({...v,[col]:id}));toast('Reunião guardada');
+  col=='lead_id'?(await viewLeads(),openLead(id,'reu')):openCli(id,'reu')})}
+
+/* ---------- CLIENTES / sucesso do cliente ---------- */
+async function viewClientes(){
+ $('#app').innerHTML=shell(`<header><h2>Clientes <small id="cn"></small></h2><small>Os clientes nascem quando um lead passa a “Ganho”.</small></header><table><thead><tr><th>Cliente</th><th>Estado</th><th>Saúde</th><th>Valor mensal</th><th>Sem contacto</th><th>Alertas</th></tr></thead><tbody id="tb"><tr><td colspan="6">A carregar…</td></tr></tbody></table>`);
+ S.cli=await q(sb.from('clientes_resumo').select('*').order('empresa'));$('#cn').textContent=S.cli.length;
+ const sc={verde:'gr',amarelo:'am',vermelho:'rd'};
+ $('#tb').innerHTML=S.cli.map(c=>`<tr onclick="openCli('${c.id}')"><td><b>${h(c.empresa)}</b><br><small>${c.servicos_ativos} serviço(s)${c.nps_ultimo!=null?' · NPS '+c.nps_ultimo:''}</small></td><td><span class="ch">${h(c.estado)}</span></td><td>${c.saude?`<span class="ch ${sc[c.saude]}">${c.saude}</span>`:'—'}</td><td>${kz(c.valor_mensal_kz)}</td><td>${c.dias_sem_contacto==null?'—':c.dias_sem_contacto+' d'}</td><td>${c.revisao_vencida?'<span class="ch rd">revisão vencida</span>':''}${c.incidencias_abertas?`<span class="ch rd">${c.incidencias_abertas} incid.</span>`:''}</td></tr>`).join('')||'<tr><td colspan="6">Ainda sem clientes.</td></tr>'}
+async function openCli(id,tab='res'){CUR={id,tab};const c=(await q(sb.from('clientes').select('*').eq('id',id)))[0];let b='';
+ if(tab=='res'){const n=await q(sb.from('cliente_nps').select('*').eq('cliente_id',id).order('data',{ascending:false}).limit(5));
+  b=`<div class="kv"><span>Estado</span><div>${h(c.estado)}</div><span>Contacto</span><div>${h(c.nome_contacto)}<br>${h(c.email)}<br>${h(c.telefone)} ${wa(c.telefone_wa)}</div>
+  <span>Saúde / risco</span><div>${h(c.saude||'—')} / ${h(c.risco_churn||'—')} ${h(c.motivo_risco||'')}</div><span>Objectivos</span><div>${h(c.objectivos||'—')}</div><span>Plano de sucesso</span><div>${h(c.plano_sucesso||'—')}</div>
+  <span>Último contacto</span><div>${fd(c.ultimo_contacto_em)}</div><span>Próxima revisão</span><div>${c.proxima_revisao_em||'—'} (a cada ${c.frequencia_revisao_dias} dias)</div></div>
+  <p><button class="b s" onclick="editCli('${id}')">Editar plano</button> <button class="b s g" onclick="newNps('${id}')">+ NPS</button> <button class="b s g" onclick="newAct('cliente_id','${id}')">+ Contacto</button> <button class="b s g" onclick="newTask('cliente_id','${id}')">+ Tarefa</button></p>
+  <b>NPS</b>${tl(n,x=>`<div class="it"><b>${x.pontuacao}</b> <small>${x.data}</small> ${h(x.comentario)}</div>`)}`}
+ if(tab=='srv'){const r=await q(sb.from('cliente_servicos').select('*').eq('cliente_id',id).order('created_at'));
+  b=`<button class="b s" onclick="newCS('${id}')">+ Serviço</button>`+tl(r,s=>`<div class="it"><b>${h(s.servico)}</b> <span class="ch ${s.estado=='ativo'?'gr':''}">${s.estado}</span><br><small>${s.valor_mensal_kz?kz(s.valor_mensal_kz)+'/mês':'sem valor'} · renovação ${s.data_renovacao||'—'}</small>${s.estado=='ativo'?` <button class="b s g" onclick="cancCS('${s.id}','${id}')">Cancelar</button>`:''}</div>`)}
+ if(tab=='reu')b=await meetList('cliente_id',id);
+ if(tab=='onb'){const r=await q(sb.from('cliente_checklist').select('*').eq('cliente_id',id).order('ordem'));
+  b=`<p><small>${r.filter(x=>x.concluida_em).length}/${r.length} concluídos — ao fechar todos, o cliente passa a “ativo”.</small></p>`+tl(r,x=>`<label class="it" style="display:flex;gap:8px;cursor:pointer"><input type="checkbox" style="width:auto" ${x.concluida_em?'checked':''} onchange="togChk('${x.id}',this.checked,'${id}')"><span>${h(x.titulo)}<br><small>prazo ${x.prazo||'—'}</small></span></label>`)}
+ if(tab=='inc'){const r=await q(sb.from('cliente_incidencias').select('*').eq('cliente_id',id).order('aberta_em',{ascending:false}));
+  b=`<button class="b s" onclick="newInc('${id}')">+ Incidência</button>`+tl(r,x=>`<div class="it"><b>${h(x.titulo)}</b> <span class="ch ${x.gravidade=='alta'?'rd':''}">${x.gravidade}</span><span class="ch ${x.estado=='resolvida'?'gr':''}">${x.estado}</span><br><small>${fd(x.aberta_em)}</small><br>${h(x.descricao)}${x.estado!='resolvida'?`<br><button class="b s g" onclick="resInc('${x.id}','${id}')">Marcar resolvida</button>`:''}</div>`)}
+ drOpen(h(c.empresa),[['res','Resumo'],['srv','Serviços'],['reu','Reuniões'],['onb','Onboarding'],['inc','Incidências']],tab,'openCli',b)}
+function editCli(id){q(sb.from('clientes').select('*').eq('id',id)).then(r=>{const c=r[0];
+ modal('Plano de sucesso',[{k:'saude',l:'Saúde',t:'select',v:c.saude,o:[['verde','Verde'],['amarelo','Amarelo'],['vermelho','Vermelho']]},
+  {k:'risco_churn',l:'Risco de perda',t:'select',v:c.risco_churn,o:[['baixo','Baixo'],['medio','Médio'],['alto','Alto']]},{k:'motivo_risco',l:'Motivo do risco',v:c.motivo_risco},
+  {k:'objectivos',l:'Objectivos do cliente',t:'area',v:c.objectivos},{k:'plano_sucesso',l:'Plano de sucesso',t:'area',v:c.plano_sucesso},
+  {k:'frequencia_revisao_dias',l:'Revisão a cada (dias)',t:'number',r:1,v:c.frequencia_revisao_dias},{k:'proxima_revisao_em',l:'Próxima revisão',t:'date',v:c.proxima_revisao_em},
+  {k:'responsavel_id',l:'Responsável de sucesso',t:'select',v:c.responsavel_id,o:S.users.map(u=>[u.id,u.full_name])}],
+ async v=>{await q(sb.from('clientes').update(v).eq('id',id));toast('Guardado');openCli(id)})})}
+function newNps(id){modal('Registar NPS',[{k:'pontuacao',l:'Pontuação (0 a 10)',t:'number',r:1},{k:'comentario',l:'Comentário',t:'area'}],async v=>{
+ await q(sb.from('cliente_nps').insert({cliente_id:id,...v}));openCli(id)})}
+function newCS(id){modal('Adicionar serviço contratado',[{k:'s',l:'Serviço',t:'select',r:1,o:S.servicos.map(s=>[s.id,s.nome])},{k:'valor',l:'Valor mensal (Kz)',t:'number'},{k:'ren',l:'Data de renovação',t:'date'}],async v=>{
+ const s=S.servicos.find(x=>x.id==v.s);await q(sb.from('cliente_servicos').insert({cliente_id:id,servico_id:s.id,servico:s.nome,valor_mensal_kz:v.valor,data_renovacao:v.ren,data_inicio:new Date().toISOString().slice(0,10)}));openCli(id,'srv')})}
+async function cancCS(sid,id){if(!confirm('Cancelar este serviço?'))return;await q(sb.from('cliente_servicos').update({estado:'cancelado'}).eq('id',sid));openCli(id,'srv')}
+async function togChk(cid,on,id){await q(sb.from('cliente_checklist').update({concluida_em:on?new Date().toISOString():null,concluida_por:on?S.me.id:null}).eq('id',cid));openCli(id,'onb')}
+function newInc(id){modal('Nova incidência',[{k:'titulo',l:'Título',r:1},{k:'gravidade',l:'Gravidade',t:'select',r:1,v:'media',o:[['baixa','Baixa'],['media','Média'],['alta','Alta']]},{k:'descricao',l:'Descrição',t:'area'}],async v=>{
+ await q(sb.from('cliente_incidencias').insert({cliente_id:id,...v}));openCli(id,'inc')})}
+async function resInc(iid,id){await q(sb.from('cliente_incidencias').update({estado:'resolvida'}).eq('id',iid));openCli(id,'inc')}
+
+/* ---------- Dashboard ---------- */
+const adm=()=>['cmo','admin'].includes((S.me.role||'').toLowerCase());
+const cnt=(a,f)=>a.reduce((m,x)=>(m[f(x)]=(m[f(x)]||0)+1,m),{});
+function bars(o,keys){const ks=keys||Object.keys(o),mx=Math.max(1,...ks.map(k=>o[k]||0));return ks.map(k=>`<div style="display:flex;gap:8px;align-items:center;margin:5px 0"><span style="width:210px;font-size:13px">${h(k)}</span><div style="background:var(--l);height:10px;width:${(o[k]||0)/mx*55}%;min-width:2px;border-radius:5px"></div><b>${o[k]||0}</b></div>`).join('')}
+async function viewDash(){
+ $('#app').innerHTML=shell('<h2>Dashboard</h2><p>A carregar…</p>');
+ const[L,C,R]=await Promise.all([q(sb.from('leads').select('pipeline_stage,origem,valor_estimado_kz').is('deleted_at',null)),q(sb.from('clientes_resumo').select('*')),q(sb.from('sla_leads_em_risco').select('*').order('horas_sem_contacto',{ascending:false}))]);
+ const at=L.filter(l=>!['Ganho','Perdido'].includes(l.pipeline_stage)),g=L.filter(l=>l.pipeline_stage=='Ganho').length,p=L.filter(l=>l.pipeline_stage=='Perdido').length;
+ const mrr=C.reduce((a,c)=>a+Number(c.valor_mensal_kz||0),0),pv=at.reduce((a,l)=>a+Number(l.valor_estimado_kz||0),0);
+ const k=(t,v,s='')=>`<div class="it" style="flex:1;min-width:150px"><small>${t}</small><div style="font-size:24px;font-weight:700;color:var(--g)">${v}</div><small>${s}</small></div>`;
+ const risco=C.filter(c=>c.saude=='vermelho'||c.revisao_vencida||c.incidencias_abertas>0||c.risco_churn=='alto');
+ $('#app').innerHTML=shell(`<h2>Dashboard</h2><p><small>${new Date().toLocaleDateString('pt-PT',{dateStyle:'full'})}</small></p>
+ <div style="display:flex;gap:10px;flex-wrap:wrap">${k('Leads activos',at.length,L.length+' no total')}${k('Valor em pipeline',kz(pv))}${k('Conversão',(g+p?Math.round(g/(g+p)*100):0)+'%',g+' ganhos · '+p+' perdidos')}${k('Clientes',C.length)}${k('Valor mensal (clientes)',kz(mrr))}${k('Alertas SLA',R.length,'sem contacto há +24h')}</div>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px">
+ <div><h3>Alertas SLA</h3>${tl(R,r=>`<div class="it"><b>${h(r.nome_completo)}</b> <span class="ch rd">${r.horas_sem_contacto}h</span><br><small>${h(r.empresa)} · ${h(r.proprietario)}</small></div>`)}</div>
+ <div><h3>Clientes a precisar de atenção</h3>${tl(risco,c=>`<div class="it"><b>${h(c.empresa)}</b> ${c.saude=='vermelho'?'<span class="ch rd">saúde vermelha</span>':''}${c.revisao_vencida?'<span class="ch rd">revisão vencida</span>':''}${c.incidencias_abertas?`<span class="ch rd">${c.incidencias_abertas} incid.</span>`:''}${c.risco_churn=='alto'?'<span class="ch rd">risco alto</span>':''}</div>`)}</div>
+ <div><h3>Funil</h3>${bars(cnt(L,l=>l.pipeline_stage),ETAPAS)}</div><div><h3>Origem dos leads</h3>${bars(cnt(L,l=>l.origem))}</div></div>`)}
+
+/* ---------- Pipeline (arrastar) ---------- */
+async function viewPipe(){
+ $('#app').innerHTML=shell('<header><h2>Pipeline</h2><small>Arraste os cartões entre etapas</small></header><div id="kb" style="display:flex;gap:10px;overflow:auto;align-items:flex-start"></div>');
+ S.leads=await q(sb.from('leads').select('*,lead_servicos(servicos(nome))').is('deleted_at',null).order('created_at',{ascending:false}));
+ $('#kb').innerHTML=ETAPAS.map(e=>{const L=S.leads.filter(l=>l.pipeline_stage==e);return`<div style="min-width:235px;background:#eef3e6;border-radius:12px;padding:8px;min-height:120px" ondragover="event.preventDefault()" ondrop="dropL(event,'${e}')"><b style="font-size:12px">${e} <span class="ch">${L.length}</span></b>${L.map(l=>{const s=sla(l);return`<div class="it" style="background:#fff;cursor:grab" draggable="true" ondragstart="event.dataTransfer.setData('t','${l.id}')" onclick="openLead('${l.id}')"><b>${h(l.nome_completo)}</b><br><small>${h(l.empresa)} · ${h(own(l))}</small><br>${svc(l)}${s>24?` <span class="ch rd">${s}h</span>`:''}</div>`}).join('')}</div>`}).join('')}
+async function dropL(ev,e){ev.preventDefault();const id=ev.dataTransfer.getData('t'),l=S.leads.find(x=>x.id==id);if(!l||l.pipeline_stage==e)return;const u={pipeline_stage:e};
+ if(e=='Perdido'){const m=prompt('Motivo da perda?');if(!m)return;u.motivo_perda=m}
+ await q(sb.from('leads').update(u).eq('id',id));toast(e=='Ganho'?'Ganho! Cliente criado automaticamente.':'Movido');viewPipe()}
+
+/* ---------- Hoje (tarefas) ---------- */
+async function viewHoje(){
+ $('#app').innerHTML=shell('<header><h2>Hoje <small>as minhas tarefas</small></h2><button class="b" onclick="newTask()">+ Tarefa</button></header><div id="hj">A carregar…</div>');
+ const T=await q(sb.from('tarefas').select('*,leads(nome_completo),clientes(empresa)').is('concluida_em',null).eq('responsavel_id',S.me.id).order('vencimento'));
+ $('#hj').innerHTML=tl(T,t=>`<label class="it" style="display:flex;gap:8px;cursor:pointer"><input type="checkbox" style="width:auto" onchange="doneTask('${t.id}')"><span><b>${h(t.titulo)}</b> ${new Date(t.vencimento)<Date.now()?'<span class="ch rd">atrasada</span>':''}<br><small>${fd(t.vencimento)} · ${h(t.leads?.nome_completo||t.clientes?.empresa||'')}</small></span></label>`)}
+function newTask(col,id){modal('Nova tarefa',[{k:'titulo',l:'Tarefa',r:1},{k:'vencimento',l:'Vencimento',t:'datetime-local',r:1}],async v=>{
+ const o={titulo:v.titulo,vencimento:new Date(v.vencimento).toISOString()};if(col)o[col]=id;await q(sb.from('tarefas').insert(o));toast('Tarefa criada');if(S.view=='hoje')viewHoje()})}
+async function doneTask(id){await q(sb.from('tarefas').update({concluida_em:new Date().toISOString()}).eq('id',id));viewHoje()}
+
+/* ---------- editar lead / CSV ---------- */
+function editLead(id){const l=S.leads.find(x=>x.id==id);modal('Editar lead',[{k:'nome_completo',l:'Nome',r:1,v:l.nome_completo},{k:'empresa',l:'Empresa',r:1,v:l.empresa},{k:'email',l:'Email',t:'email',r:1,v:l.email},{k:'telefone',l:'Telefone',r:1,v:l.telefone},
+ {k:'origem',l:'Origem',t:'select',r:1,v:l.origem,o:S.origens.map(o=>[o,o])},{k:'canal_preferido',l:'Canal preferido',t:'select',v:l.canal_preferido,o:[['whatsapp','WhatsApp'],['telefone','Telefone'],['email','Email'],['presencial','Presencial']]},
+ {k:'valor_estimado_kz',l:'Valor estimado (Kz)',t:'number',v:l.valor_estimado_kz},{k:'probabilidade',l:'Probabilidade (0-100)',t:'number',v:l.probabilidade},{k:'nif',l:'NIF',v:l.nif},{k:'provincia',l:'Província',v:l.provincia},{k:'setor',l:'Sector',v:l.setor}],
+ async v=>{await q(sb.from('leads').update(v).eq('id',id));toast('Guardado');await viewLeads();openLead(id)})}
+function csv(){const c=['nome_completo','empresa','email','telefone','origem','servico_interesse','pipeline_stage','proprietario','data_entrada','valor_estimado_kz'];
+ const r=[c.join(';'),...S.leads.map(l=>c.map(k=>'"'+String(l[k]??'').replace(/"/g,'""')+'"').join(';'))].join('\r\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+r],{type:'text/csv;charset=utf-8'}));a.download='leads.csv';a.click()}
+
+/* ---------- Admin ---------- */
+const ROLES=['Content Specialist','Customer Success','CMO','Admin','Gestor Comercial','Comercial','Operações'];
+async function viewAdmin(){
+ $('#app').innerHTML=shell('<h2>Admin</h2><div id="ad">A carregar…</div>');
+ const[U,Sv,Or]=await Promise.all([q(sb.from('users').select('*').order('full_name')),q(sb.from('servicos').select('*').order('ordem')),q(sb.from('origens').select('*').order('ordem'))]);
+ const cat=(t,R)=>`<div><h3>${t=='servicos'?'Serviços':'Origens'} <button class="b s" onclick="newCat('${t}')">+ Novo</button></h3>${R.map(r=>`<label class="it" style="display:flex;gap:8px"><input type="checkbox" style="width:auto" ${r.ativo?'checked':''} onchange="togCat('${t}','${r.id}',this.checked)">${h(r.nome)}</label>`).join('')}</div>`;
+ $('#ad').innerHTML=`<h3>Utilizadores</h3><table><thead><tr><th>Nome</th><th>Email</th><th>Cargo</th><th>Activo</th></tr></thead><tbody>${U.map(u=>`<tr style="cursor:default"><td>${h(u.full_name)}</td><td>${h(u.email)}</td><td><select onchange="setUser('${u.id}',{role:this.value})">${ROLES.map(r=>`<option ${r==u.role?'selected':''}>${r}</option>`).join('')}</select></td><td><input type="checkbox" style="width:auto" ${u.ativo?'checked':''} ${u.id==S.me.id?'disabled':''} onchange="setUser('${u.id}',{ativo:this.checked})"></td></tr>`).join('')}</tbody></table>
+ <p><small>Novos utilizadores continuam a ser criados no CRM actual (“Novo Utilizador”). Desactivar retira o acesso sem apagar o histórico.</small></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">${cat('servicos',Sv)}${cat('origens',Or)}</div>`}
+async function setUser(id,p){await q(sb.from('users').update(p).eq('id',id));toast('Actualizado');viewAdmin()}
+async function togCat(t,id,on){await q(sb.from(t).update({ativo:on}).eq('id',id));await init()}
+function newCat(t){modal('Novo registo',[{k:'nome',l:'Nome',r:1}],async v=>{await q(sb.from(t).insert({nome:v.nome,ordem:100}));toast('Criado');await init()})}
+init();
+</script></body></html>
