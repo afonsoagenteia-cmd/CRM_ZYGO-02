@@ -3,27 +3,32 @@
 <title>ZYGO CRM v2</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <style>
-:root{--g:#063a20;--l:#c5dc3a;--bg:#f8f9f5;--t:#12281c;--m:#6b7f73;--bd:#e3e8de;--r:#c0392b}
-*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,sans-serif;color:var(--t);background:var(--bg)}
-#app{display:flex;min-height:100vh}aside{width:200px;background:var(--g);color:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
-.lo{font-size:20px;margin-bottom:14px}.lo small{display:block;font-size:10px;opacity:.6;letter-spacing:.1em}
-.nv{background:none;border:0;color:#fff;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;font:inherit}.nv.on{background:var(--l);color:var(--g);font-weight:600}
-.ft{margin-top:auto;font-size:12px}main{flex:1;padding:24px;min-width:0}header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-h2{margin:0;color:var(--g)}h2 small{color:var(--m);font-weight:400}
-input,select,textarea{font:inherit;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:#fff;width:100%}header input,header select{width:auto}
-.b{background:var(--l);color:var(--g);border:0;padding:9px 14px;border-radius:8px;font-weight:600;cursor:pointer}.b.g{background:#e9eee4}.b.s{padding:4px 9px;font-size:12px}
-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
-th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--m);text-align:left;padding:10px}td{padding:10px;border-top:1px solid var(--bd);vertical-align:top}
-tbody tr{cursor:pointer}tbody tr:hover{background:#f3f7ea}small{color:var(--m)}
-.ch{display:inline-block;background:#eef3e6;color:var(--g);border-radius:99px;padding:2px 9px;font-size:12px;margin:1px 2px 1px 0}.rd{background:#fde8e5;color:var(--r)}.gr{background:#dff3e3}.am{background:#fff3cd}
-#dr{position:fixed;right:0;top:0;bottom:0;width:min(560px,100%);background:#fff;box-shadow:-8px 0 30px #0003;padding:20px;overflow:auto;display:none;z-index:5}
-.tabs{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap}.tabs button{border:0;background:#eef3e6;padding:6px 12px;border-radius:99px;cursor:pointer;font:inherit}.tabs .on{background:var(--g);color:#fff}
-.it{border:1px solid var(--bd);border-radius:10px;padding:10px;margin:8px 0}.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 10px;margin:10px 0}.kv span{color:var(--m)}
-.ov{position:fixed;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;z-index:9;padding:12px}.mc{background:#fff;border-radius:14px;padding:20px;width:min(480px,100%);max-height:92vh;overflow:auto}
-.fl{display:block;margin:10px 0;font-size:12px;color:var(--m)}.fl>*{margin-top:4px;color:var(--t)}.mu{display:grid;gap:4px}.mu label{display:flex;gap:6px;align-items:center;color:var(--t);font-size:13px}.mu input{width:auto}
-.ac{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}.lg{margin:auto;width:min(340px,92%);padding:30px}.lg form{display:grid;gap:10px}.lg h1{color:var(--g)}
-#ts{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20}#ts div{background:var(--g);color:#fff;padding:9px 16px;border-radius:8px;margin-top:6px}#ts .e{background:var(--r)}
-@media(max-width:760px){#app{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap}.ft{margin:0 0 0 auto}main{padding:12px}td:nth-child(n+4),th:nth-child(n+4){display:none}}
+:root{--g:#063a20;--g2:#0b5230;--l:#c5dc3a;--bg:#f5f7f2;--t:#14281d;--m:#6d7f74;--bd:#e4e9df;--r:#c0392b;--sh:0 1px 2px #0a2a1a14,0 4px 14px #0a2a1a0a}
+*{box-sizing:border-box}body{margin:0;font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--t);background:var(--bg);-webkit-font-smoothing:antialiased}
+#app{display:flex;min-height:100vh}aside{width:224px;flex:none;background:var(--g);color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.lo{display:flex;align-items:center;gap:10px;padding:0 8px 22px;font-size:18px;font-weight:700;letter-spacing:.02em}.lo i{width:32px;height:32px;border-radius:9px;background:var(--l);color:var(--g);display:grid;place-items:center;font-style:normal;font-weight:800}.lo small{display:block;font-size:10px;font-weight:500;color:#ffffff8c;letter-spacing:.14em}
+.nv{display:flex;align-items:center;gap:11px;width:100%;background:none;border:0;color:#cfe3d6;text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer;font:inherit;font-weight:500}.nv:hover{background:#ffffff14;color:#fff}.nv.on{background:var(--l);color:var(--g);font-weight:700}.nv svg{width:18px;height:18px;flex:none}
+.us{margin-top:auto;border-top:1px solid #ffffff1f;padding-top:14px}.me{display:flex;gap:10px;align-items:center;padding:0 6px 10px}.av{width:34px;height:34px;border-radius:50%;background:var(--l);color:var(--g);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}.me b{display:block;font-size:13px;line-height:1.2}.me small{color:#ffffff99}
+main{flex:1;min-width:0;padding:28px 32px;max-width:1280px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h2{margin:0;font-size:24px;letter-spacing:-.01em;color:var(--g)}h2 small{font-size:14px;color:var(--m);font-weight:500;margin-left:6px}h3{font-size:15px;margin:0 0 12px;color:var(--g)}h4{margin:14px 0 4px;color:var(--m);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+input,select,textarea{font:inherit;height:40px;padding:0 12px;border:1px solid var(--bd);border-radius:10px;background:#fff;width:100%;color:var(--t)}textarea{height:auto;padding:10px 12px}header input{width:240px}header select{width:auto}input:focus,select:focus,textarea:focus{outline:2px solid #c5dc3a99;border-color:var(--g2)}
+.b{height:40px;background:var(--l);color:var(--g);border:0;padding:0 16px;border-radius:10px;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}.b:hover{filter:brightness(.95)}.b.g{background:#fff;border:1px solid var(--bd);color:var(--t);font-weight:600}.b.s{height:30px;padding:0 11px;font-size:12px}.b:disabled{opacity:.5}
+.card{background:#fff;border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);padding:18px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}.kpi{display:flex;flex-direction:column;gap:2px}.kpi>small:first-child{font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600}.kpi b{font-size:26px;line-height:1.2;color:var(--g)}.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-top:16px}
+.bar{display:grid;grid-template-columns:130px 1fr 28px;gap:10px;align-items:center;margin:9px 0;font-size:13px}.bar .tk{background:#eef3e6;border-radius:99px;height:8px;overflow:hidden}.bar i{display:block;height:8px;border-radius:99px;background:var(--l)}.bar b{text-align:right}
+table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);overflow:hidden;table-layout:fixed}
+th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--m);text-align:left;padding:12px 14px;background:#fafbf8;border-bottom:1px solid var(--bd)}td{padding:12px 14px;border-bottom:1px solid #eef1ea;vertical-align:middle;overflow:hidden}tbody tr:last-child td{border-bottom:0}tbody tr{cursor:pointer}tbody tr:hover{background:#f6faea}td b,td small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}small{color:var(--m)}
+.ch{display:inline-flex;align-items:center;background:#eef3e6;color:var(--g);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:500;white-space:nowrap;margin:2px 4px 2px 0}td .ch{max-width:150px;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:middle}
+.rd{background:#fde8e5;color:var(--r)}.gr{background:#dff3e3;color:#13693a}.am{background:#fff1c9;color:#8a6100}.bl{background:#e3eefb;color:#1b4f8f}.gy{background:#eceeea;color:#58665d}
+.wa{display:inline-flex;background:#e6f7ec;color:#13693a;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;text-decoration:none}.wa:hover{background:#d3f0de}
+.kb{display:flex;gap:12px;overflow:auto;align-items:flex-start;padding-bottom:10px}.col{flex:0 0 250px;background:#ebf0e4;border-radius:14px;padding:10px;min-height:140px}.col h4{margin:2px 4px 6px;display:flex;justify-content:space-between;align-items:center}.kc{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:10px;margin:8px 0;cursor:grab;box-shadow:var(--sh)}.kc:hover{border-color:var(--g2)}
+#dr{position:fixed;right:0;top:0;bottom:0;width:min(580px,100%);background:#fff;box-shadow:-10px 0 40px #0a2a1a33;padding:22px;overflow:auto;display:none;z-index:5}
+.tabs{display:flex;gap:4px;margin:14px 0;flex-wrap:wrap;border-bottom:1px solid var(--bd);padding-bottom:10px}.tabs button{border:0;background:none;padding:7px 12px;border-radius:8px;cursor:pointer;font:inherit;font-weight:500;color:var(--m)}.tabs .on{background:var(--g);color:#fff}
+.it{border:1px solid var(--bd);border-radius:12px;padding:12px;margin:8px 0}.kv{display:grid;grid-template-columns:120px 1fr;gap:10px 12px;margin:12px 0;align-items:start}.kv>span{color:var(--m);font-size:13px}
+.ov{position:fixed;inset:0;background:#0a2a1a73;display:flex;align-items:center;justify-content:center;z-index:9;padding:12px}.mc{background:#fff;border-radius:16px;padding:22px;width:min(500px,100%);max-height:92vh;overflow:auto}
+.fl{display:block;margin:12px 0;font-size:12px;font-weight:600;color:var(--m)}.fl>*{margin-top:5px;font-weight:400;color:var(--t)}.mu{display:grid;gap:6px;max-height:190px;overflow:auto;border:1px solid var(--bd);border-radius:10px;padding:10px}.mu label{display:flex;gap:8px;align-items:center;font-size:13px}.mu input{width:auto;height:auto}
+.ac{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}.lg{margin:auto;width:min(360px,92%);padding:32px}.lg form{display:grid;gap:12px}.lg h1{color:var(--g);margin:0 0 6px}
+#ts{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20}#ts div{background:var(--g);color:#fff;padding:10px 18px;border-radius:10px;margin-top:6px;box-shadow:var(--sh)}#ts .e{background:var(--r)}
+@media(max-width:860px){#app{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;padding:10px}.lo{padding:0 8px}.nv{width:auto;padding:8px 10px}.us{margin:0 0 0 auto;border:0;padding:0}.me{display:none}main{padding:16px}td:nth-child(n+4),th:nth-child(n+4){display:none}.bar{grid-template-columns:100px 1fr 24px}}
 </style></head><body><div id="app"></div>
 <script>
 const SB_URL='https://taeavxdlfbgtevadugnk.supabase.co',SB_KEY='sb_publishable_xT9fTOhuFbSNNFjYkPJIEA__Olfg6tv';
@@ -36,7 +41,11 @@ const fd=d=>d?new Date(d).toLocaleString('pt-PT',{dateStyle:'short',timeStyle:'s
 const kz=n=>new Intl.NumberFormat('pt-PT').format(n||0)+' Kz';
 function toast(m,e){const d=document.createElement('div');d.textContent=m;if(e)d.className='e';$('#ts').appendChild(d);setTimeout(()=>d.remove(),3500)}
 async function q(p){const{data,error}=await p;if(error){toast(error.message,1);throw error}return data}
-const wa=t=>t?`<a href="https://wa.me/${h(t.replace('+',''))}" target="_blank" onclick="event.stopPropagation()">WhatsApp</a>`:'';
+const wa=t=>t?`<a class="wa" href="https://wa.me/${h(t.replace('+',''))}" target="_blank" onclick="event.stopPropagation()">WhatsApp</a>`:''
+const IC={dash:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',leads:'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2 21c0-4 3-6 7-6s7 2 7 6M17 4a3.5 3.5 0 0 1 0 7M22 21c0-3-1.5-5-4-5.7',pipe:'M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v6h-4z',clientes:'M4 21V6l8-3 8 3v15zM9 21v-5h6v5',hoje:'M20 6L9 17l-5-5',admin:'M4 7h16M4 12h16M4 17h16M9 5v4M15 10v4M8 15v4',sair:'M9 21H5V3h4M16 17l5-5-5-5M21 12H9'};
+const ic=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${IC[n]}"/></svg>`;
+const SC={'Novo Lead':['bl','Novo'],'Em Qualificação':['am','Em qualificação'],'MQL Qualificado (SQL)':['am','Qualificado'],'Reunião de Diagnóstico Agendada':['bl','Diagnóstico'],'Proposta Comercial Enviada':['bl','Proposta'],'Negociação / Ajustes':['bl','Negociação'],'Ganho':['gr','Ganho'],'Perdido':['gy','Perdido']};
+const st=e=>{const[c,t]=SC[e]||['',e];return`<span class="ch ${c}" title="${h(e)}">${h(t)}</span>`};
 const own=l=>(S.users.find(u=>u.id==l.proprietario_id)||{}).full_name||l.proprietario||'—';
 const sla=l=>(l.primeira_resposta_em||['Ganho','Perdido'].includes(l.pipeline_stage))?null:Math.round((Date.now()-new Date(l.data_entrada))/36e5);
 
@@ -52,7 +61,8 @@ async function init(){
  go(S.view)}
 function login(){$('#app').innerHTML=`<div class="lg"><form onsubmit="return doLogin(event)"><h1>ZYGO CRM</h1><input id="em" type="email" placeholder="Email" required><input id="pw" type="password" placeholder="Palavra-passe" required><button class="b">Entrar</button><small id="le"></small></form></div>`}
 async function doLogin(e){e.preventDefault();const{error}=await sb.auth.signInWithPassword({email:$('#em').value,password:$('#pw').value});if(error)$('#le').textContent='Credenciais inválidas';else init();return false}
-function shell(c){return`<aside><b class="lo">ZYGO<small>CRM V2</small></b>${[['dash','Dashboard'],['leads','Leads'],['pipe','Pipeline'],['clientes','Clientes'],['hoje','Hoje']].concat(adm()?[['admin','Admin']]:[]).map(([v,t])=>`<button class="nv ${S.view==v?'on':''}" onclick="go('${v}')">${t}</button>`).join('')}<div class="ft">${h(S.me.full_name)}<br><small style="color:#fffa">${h(S.me.role)}</small><button class="nv" onclick="sb.auth.signOut().then(()=>location.reload())">Sair</button></div></aside><main>${c}</main><div id="dr"></div><div id="md"></div><div id="ts"></div>`}
+function shell(c){const n=[['dash','Dashboard'],['leads','Leads'],['pipe','Pipeline'],['clientes','Clientes'],['hoje','Hoje']].concat(adm()?[['admin','Admin']]:[]);
+ return`<aside><div class="lo"><i>Z</i><div>ZYGO<small>CRM V2</small></div></div>${n.map(([v,t])=>`<button class="nv ${S.view==v?'on':''}" onclick="go('${v}')">${ic(v)}${t}</button>`).join('')}<div class="us"><div class="me"><span class="av">${h((S.me.full_name||'?').slice(0,2).toUpperCase())}</span><div><b>${h(S.me.full_name)}</b><small>${h(S.me.role)}</small></div></div><button class="nv" onclick="sb.auth.signOut().then(()=>location.reload())">${ic('sair')}Sair</button></div></aside><main>${c}</main><div id="dr"></div><div id="md"></div><div id="ts"></div>`}
 function go(v){S.view=v;closeDr();({dash:viewDash,leads:viewLeads,pipe:viewPipe,clientes:viewClientes,hoje:viewHoje,admin:viewAdmin})[v]()}
 function closeDr(){const d=$('#dr');if(d)d.style.display='none'}
 
@@ -73,13 +83,13 @@ function modal(title,fields,ok){
 /* ---------- LEADS ---------- */
 async function viewLeads(){
  if(S.view=='pipe')return viewPipe();
- $('#app').innerHTML=shell(`<header><h2>Leads <small id="cn"></small></h2><div style="display:flex;gap:8px;flex-wrap:wrap"><input placeholder="Pesquisar…" value="${h(S.q)}" oninput="S.q=this.value;rowsL()"><select onchange="S.fe=this.value;rowsL()"><option value="">Todas as etapas</option>${ETAPAS.map(e=>`<option ${e==S.fe?'selected':''}>${e}</option>`).join('')}</select><button class="b g" onclick="csv()">CSV</button><button class="b" onclick="newLead()">+ Novo lead</button></div></header><table><thead><tr><th>Lead</th><th>Serviços</th><th>Etapa</th><th>Responsável</th><th>SLA</th><th></th></tr></thead><tbody id="tb"><tr><td colspan="6">A carregar…</td></tr></tbody></table>`);
+ $('#app').innerHTML=shell(`<header><h2>Leads <small id="cn"></small></h2><div class="tb" style="display:flex;gap:8px;flex-wrap:wrap"><input placeholder="Pesquisar…" value="${h(S.q)}" oninput="S.q=this.value;rowsL()"><select onchange="S.fe=this.value;rowsL()"><option value="">Todas as etapas</option>${ETAPAS.map(e=>`<option ${e==S.fe?'selected':''}>${e}</option>`).join('')}</select><button class="b g" onclick="csv()">CSV</button><button class="b" onclick="newLead()">+ Novo lead</button></div></header><table><thead><tr><th style="width:24%">Lead</th><th style="width:27%">Serviços</th><th style="width:14%">Etapa</th><th style="width:15%">Responsável</th><th style="width:9%">SLA</th><th style="width:11%">Contacto</th></tr></thead><tbody id="tb"><tr><td colspan="6">A carregar…</td></tr></tbody></table>`);
  S.leads=await q(sb.from('leads').select('*,lead_servicos(servicos(nome))').is('deleted_at',null).order('created_at',{ascending:false}));rowsL()}
-const svc=l=>(l.lead_servicos||[]).map(x=>`<span class="ch">${h(x.servicos?.nome)}</span>`).join('')||h(l.servico_interesse);
+const svc=l=>{const a=(l.lead_servicos||[]).map(x=>x.servicos?.nome).filter(Boolean);if(!a.length)return h(l.servico_interesse);return a.slice(0,2).map(n=>`<span class="ch" title="${h(n)}">${h(n)}</span>`).join('')+(a.length>2?`<span class="ch gy" title="${h(a.slice(2).join(', '))}">+${a.length-2}</span>`:'')}
 function rowsL(){const t=S.q.toLowerCase();
  const L=S.leads.filter(l=>(!S.fe||l.pipeline_stage==S.fe)&&`${l.nome_completo} ${l.empresa} ${l.email} ${l.telefone}`.toLowerCase().includes(t));
  $('#cn').textContent=L.length;
- $('#tb').innerHTML=L.map(l=>{const s=sla(l);return`<tr onclick="openLead('${l.id}')"><td><b>${h(l.nome_completo)}</b><br><small>${h(l.empresa)}</small></td><td>${svc(l)}</td><td><span class="ch">${h(l.pipeline_stage)}</span></td><td>${h(own(l))}</td><td>${s==null?'':`<span class="ch ${s>24?'rd':'gr'}">${s}h</span>`}</td><td>${wa(l.telefone_wa)}</td></tr>`}).join('')||'<tr><td colspan="6">Sem resultados.</td></tr>'}
+ $('#tb').innerHTML=L.map(l=>{const s=sla(l);return`<tr onclick="openLead('${l.id}')"><td><b>${h(l.nome_completo)}</b><br><small>${h(l.empresa)}</small></td><td>${svc(l)}</td><td>${st(l.pipeline_stage)}</td><td>${l.proprietario_id?h(own(l)):`<small title="Responsável por atribuir (Editar)">${h(l.proprietario||'—')}</small>`}</td><td>${s==null?'':s>24?`<span class="ch rd">${s}h</span>`:`<small>${s}h</small>`}</td><td>${wa(l.telefone_wa)}</td></tr>`}).join('')||'<tr><td colspan="6">Sem resultados.</td></tr>'}
 function newLead(){
  modal('Novo lead',[
   {k:'nome_completo',l:'Nome completo',r:1},{k:'empresa',l:'Empresa',r:1},{k:'email',l:'Email',t:'email',r:1},{k:'telefone',l:'Telefone (+244 9XX XXX XXX)',r:1},
@@ -97,14 +107,14 @@ function newLead(){
   toast('Lead criado');viewLeads()})}
 function drOpen(title,tabs,tab,fn,body){const d=$('#dr');d.style.display='block';
  d.innerHTML=`<button class="b g s" onclick="closeDr()" style="float:right">Fechar</button><h3 style="margin:0;color:var(--g)">${title}</h3><div class="tabs">${tabs.map(([k,t])=>`<button class="${k==tab?'on':''}" onclick="${fn}('${CUR.id}','${k}')">${t}</button>`).join('')}</div>${body}`}
-const tl=(rows,f)=>rows.length?rows.map(f).join(''):'<p><small>Sem registos.</small></p>';
+const tl=(rows,f,e='Sem registos.')=>rows.length?rows.map(f).join(''):`<p><small>${e}</small></p>`;
 async function openLead(id,tab='res'){CUR={id,tab};const l=S.leads.find(x=>x.id==id);let b='';
  if(tab=='res'){
   b=`<div class="kv"><span>Etapa</span><select onchange="setStage('${id}',this.value)">${ETAPAS.map(e=>`<option ${e==l.pipeline_stage?'selected':''}>${e}</option>`).join('')}</select>
   <span>Contacto</span><div>${h(l.email)}<br>${h(l.telefone)} ${wa(l.telefone_wa)}</div><span>Origem</span><div>${h(l.origem)}</div>
   <span>Responsável</span><div>${h(own(l))}</div><span>Valor estimado</span><div>${l.valor_estimado_kz?kz(l.valor_estimado_kz):'—'}</div>
   <span>1.ª resposta</span><div>${fd(l.primeira_resposta_em)}</div></div><b>Serviços</b><div>${(l.lead_servicos||[]).map(x=>`<span class="ch">${h(x.servicos?.nome)}</span>`).join('')||'—'}</div>
-  <p><button class="b s g" onclick="addLeadSvc('${id}')">+ Serviço</button> <button class="b s g" onclick="newTask('lead_id','${id}')">+ Tarefa</button> <button class="b s g" onclick="editLead('${id}')">Editar</button></p>${l.cliente_id?'<p class="ch gr">Já é cliente</p>':''}`}
+  <p><button class="b s g" onclick="addLeadSvc('${id}')">+ Serviço</button> <button class="b s g" onclick="newTask('lead_id','${id}')">+ Tarefa</button> <button class="b s g" onclick="editLead('${id}')">Editar</button> ${adm()?`<button class="b s g" style="color:var(--r)" onclick="delItem('leads','${id}')">Eliminar</button>`:''}</p>${l.cliente_id?'<p class="ch gr">Já é cliente</p>':''}`}
  if(tab=='act'){const r=await q(sb.from('atividades').select('*,users(full_name)').eq('lead_id',id).order('realizada_em',{ascending:false}));
   b=`<button class="b s" onclick="newAct('lead_id','${id}')">+ Registar contacto</button>`+tl(r,a=>`<div class="it"><span class="ch">${a.tipo}</span> <small>${fd(a.realizada_em)} · ${h(a.users?.full_name)}</small><br>${h(a.resumo)}</div>`)}
  if(tab=='reu'){b=await meetList('lead_id',id)}
@@ -144,7 +154,7 @@ async function openCli(id,tab='res'){CUR={id,tab};const c=(await q(sb.from('clie
   b=`<div class="kv"><span>Estado</span><div>${h(c.estado)}</div><span>Contacto</span><div>${h(c.nome_contacto)}<br>${h(c.email)}<br>${h(c.telefone)} ${wa(c.telefone_wa)}</div>
   <span>Saúde / risco</span><div>${h(c.saude||'—')} / ${h(c.risco_churn||'—')} ${h(c.motivo_risco||'')}</div><span>Objectivos</span><div>${h(c.objectivos||'—')}</div><span>Plano de sucesso</span><div>${h(c.plano_sucesso||'—')}</div>
   <span>Último contacto</span><div>${fd(c.ultimo_contacto_em)}</div><span>Próxima revisão</span><div>${c.proxima_revisao_em||'—'} (a cada ${c.frequencia_revisao_dias} dias)</div></div>
-  <p><button class="b s" onclick="editCli('${id}')">Editar plano</button> <button class="b s g" onclick="newNps('${id}')">+ NPS</button> <button class="b s g" onclick="newAct('cliente_id','${id}')">+ Contacto</button> <button class="b s g" onclick="newTask('cliente_id','${id}')">+ Tarefa</button></p>
+  <p><button class="b s" onclick="editCli('${id}')">Editar plano</button> <button class="b s g" onclick="newNps('${id}')">+ NPS</button> <button class="b s g" onclick="newAct('cliente_id','${id}')">+ Contacto</button> <button class="b s g" onclick="newTask('cliente_id','${id}')">+ Tarefa</button> ${adm()?`<button class="b s g" style="color:var(--r)" onclick="delItem('clientes','${id}')">Eliminar</button>`:''}</p>
   <b>NPS</b>${tl(n,x=>`<div class="it"><b>${x.pontuacao}</b> <small>${x.data}</small> ${h(x.comentario)}</div>`)}`}
  if(tab=='srv'){const r=await q(sb.from('cliente_servicos').select('*').eq('cliente_id',id).order('created_at'));
   b=`<button class="b s" onclick="newCS('${id}')">+ Serviço</button>`+tl(r,s=>`<div class="it"><b>${h(s.servico)}</b> <span class="ch ${s.estado=='ativo'?'gr':''}">${s.estado}</span><br><small>${s.valor_mensal_kz?kz(s.valor_mensal_kz)+'/mês':'sem valor'} · renovação ${s.data_renovacao||'—'}</small>${s.estado=='ativo'?` <button class="b s g" onclick="cancCS('${s.id}','${id}')">Cancelar</button>`:''}</div>`)}
@@ -174,26 +184,25 @@ async function resInc(iid,id){await q(sb.from('cliente_incidencias').update({est
 /* ---------- Dashboard ---------- */
 const adm=()=>['cmo','admin'].includes((S.me.role||'').toLowerCase());
 const cnt=(a,f)=>a.reduce((m,x)=>(m[f(x)]=(m[f(x)]||0)+1,m),{});
-function bars(o,keys){const ks=keys||Object.keys(o),mx=Math.max(1,...ks.map(k=>o[k]||0));return ks.map(k=>`<div style="display:flex;gap:8px;align-items:center;margin:5px 0"><span style="width:210px;font-size:13px">${h(k)}</span><div style="background:var(--l);height:10px;width:${(o[k]||0)/mx*55}%;min-width:2px;border-radius:5px"></div><b>${o[k]||0}</b></div>`).join('')}
+function bars(o,keys){const ks=keys||Object.keys(o),mx=Math.max(1,...ks.map(k=>o[k]||0));return ks.map(k=>`<div class="bar"><span title="${h(k)}">${h(SC[k]?SC[k][1]:k)}</span><div class="tk"><i style="width:${(o[k]||0)/mx*100}%"></i></div><b>${o[k]||0}</b></div>`).join('')}
 async function viewDash(){
  $('#app').innerHTML=shell('<h2>Dashboard</h2><p>A carregar…</p>');
  const[L,C,R]=await Promise.all([q(sb.from('leads').select('pipeline_stage,origem,valor_estimado_kz').is('deleted_at',null)),q(sb.from('clientes_resumo').select('*')),q(sb.from('sla_leads_em_risco').select('*').order('horas_sem_contacto',{ascending:false}))]);
- const at=L.filter(l=>!['Ganho','Perdido'].includes(l.pipeline_stage)),g=L.filter(l=>l.pipeline_stage=='Ganho').length,p=L.filter(l=>l.pipeline_stage=='Perdido').length;
+ const at=L.filter(l=>!['Ganho','Perdido'].includes(l.pipeline_stage)),g=L.filter(l=>l.pipeline_stage=='Ganho').length;
  const mrr=C.reduce((a,c)=>a+Number(c.valor_mensal_kz||0),0),pv=at.reduce((a,l)=>a+Number(l.valor_estimado_kz||0),0);
- const k=(t,v,s='')=>`<div class="it" style="flex:1;min-width:150px"><small>${t}</small><div style="font-size:24px;font-weight:700;color:var(--g)">${v}</div><small>${s}</small></div>`;
+ const k=(t,v,x='')=>`<div class="card kpi"><small>${t}</small><b>${v}</b><small>${x}</small></div>`;
  const risco=C.filter(c=>c.saude=='vermelho'||c.revisao_vencida||c.incidencias_abertas>0||c.risco_churn=='alto');
- $('#app').innerHTML=shell(`<h2>Dashboard</h2><p><small>${new Date().toLocaleDateString('pt-PT',{dateStyle:'full'})}</small></p>
- <div style="display:flex;gap:10px;flex-wrap:wrap">${k('Leads activos',at.length,L.length+' no total')}${k('Valor em pipeline',kz(pv))}${k('Conversão',(g+p?Math.round(g/(g+p)*100):0)+'%',g+' ganhos · '+p+' perdidos')}${k('Clientes',C.length)}${k('Valor mensal (clientes)',kz(mrr))}${k('Alertas SLA',R.length,'sem contacto há +24h')}</div>
- <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px">
- <div><h3>Alertas SLA</h3>${tl(R,r=>`<div class="it"><b>${h(r.nome_completo)}</b> <span class="ch rd">${r.horas_sem_contacto}h</span><br><small>${h(r.empresa)} · ${h(r.proprietario)}</small></div>`)}</div>
- <div><h3>Clientes a precisar de atenção</h3>${tl(risco,c=>`<div class="it"><b>${h(c.empresa)}</b> ${c.saude=='vermelho'?'<span class="ch rd">saúde vermelha</span>':''}${c.revisao_vencida?'<span class="ch rd">revisão vencida</span>':''}${c.incidencias_abertas?`<span class="ch rd">${c.incidencias_abertas} incid.</span>`:''}${c.risco_churn=='alto'?'<span class="ch rd">risco alto</span>':''}</div>`)}</div>
- <div><h3>Funil</h3>${bars(cnt(L,l=>l.pipeline_stage),ETAPAS)}</div><div><h3>Origem dos leads</h3>${bars(cnt(L,l=>l.origem))}</div></div>`)}
+ $('#app').innerHTML=shell(`<header><div><h2>Dashboard</h2><small>${new Date().toLocaleDateString('pt-PT',{dateStyle:'full'})}</small></div></header>
+ <div class="kpis">${k('Leads activos',at.length,L.length+' no total')}${k('Valor em pipeline',pv?kz(pv):'—',pv?'leads activos':'sem valores estimados')}${k('Conversão',(L.length?Math.round(g/L.length*100):0)+'%',g+' ganhos em '+L.length+' leads')}${k('Clientes',C.length)}${k('Valor mensal',mrr?kz(mrr):'—','clientes activos')}${k('Alertas SLA',R.length,'sem contacto há +24h')}</div>
+ <div class="g2"><div class="card"><h3>Alertas SLA</h3>${tl(R,r=>`<div class="it"><b>${h(r.nome_completo)}</b> <span class="ch rd">${r.horas_sem_contacto}h</span><br><small>${h(r.empresa)} · ${h(r.proprietario)}</small></div>`,'Tudo em dia ✓')}</div>
+ <div class="card"><h3>Clientes a precisar de atenção</h3>${tl(risco,c=>`<div class="it"><b>${h(c.empresa)}</b><br>${c.saude=='vermelho'?'<span class="ch rd">saúde vermelha</span>':''}${c.revisao_vencida?'<span class="ch rd">revisão vencida</span>':''}${c.incidencias_abertas?`<span class="ch rd">${c.incidencias_abertas} incid.</span>`:''}${c.risco_churn=='alto'?'<span class="ch rd">risco alto</span>':''}</div>`,'Tudo em dia ✓')}</div>
+ <div class="card"><h3>Funil</h3>${bars(cnt(L,l=>l.pipeline_stage),ETAPAS)}</div><div class="card"><h3>Origem dos leads</h3>${bars(cnt(L,l=>l.origem))}</div></div>`)}
 
 /* ---------- Pipeline (arrastar) ---------- */
 async function viewPipe(){
- $('#app').innerHTML=shell('<header><h2>Pipeline</h2><small>Arraste os cartões entre etapas</small></header><div id="kb" style="display:flex;gap:10px;overflow:auto;align-items:flex-start"></div>');
+ $('#app').innerHTML=shell('<header><h2>Pipeline</h2><small>Arraste os cartões entre etapas</small></header><div id="kb" class="kb"></div>');
  S.leads=await q(sb.from('leads').select('*,lead_servicos(servicos(nome))').is('deleted_at',null).order('created_at',{ascending:false}));
- $('#kb').innerHTML=ETAPAS.map(e=>{const L=S.leads.filter(l=>l.pipeline_stage==e);return`<div style="min-width:235px;background:#eef3e6;border-radius:12px;padding:8px;min-height:120px" ondragover="event.preventDefault()" ondrop="dropL(event,'${e}')"><b style="font-size:12px">${e} <span class="ch">${L.length}</span></b>${L.map(l=>{const s=sla(l);return`<div class="it" style="background:#fff;cursor:grab" draggable="true" ondragstart="event.dataTransfer.setData('t','${l.id}')" onclick="openLead('${l.id}')"><b>${h(l.nome_completo)}</b><br><small>${h(l.empresa)} · ${h(own(l))}</small><br>${svc(l)}${s>24?` <span class="ch rd">${s}h</span>`:''}</div>`}).join('')}</div>`}).join('')}
+ $('#kb').innerHTML=ETAPAS.map(e=>{const L=S.leads.filter(l=>l.pipeline_stage==e);return`<div class="col" ondragover="event.preventDefault()" ondrop="dropL(event,'${e}')"><h4>${h(SC[e][1])} <span class="ch">${L.length}</span></h4>${L.map(l=>{const s=sla(l);return`<div class="kc" draggable="true" ondragstart="event.dataTransfer.setData('t','${l.id}')" onclick="openLead('${l.id}')"><b>${h(l.nome_completo)}</b><br><small>${h(l.empresa)} · ${h(own(l))}</small><br>${svc(l)}${s>24?` <span class="ch rd">${s}h</span>`:''}</div>`}).join('')}</div>`}).join('')}
 async function dropL(ev,e){ev.preventDefault();const id=ev.dataTransfer.getData('t'),l=S.leads.find(x=>x.id==id);if(!l||l.pipeline_stage==e)return;const u={pipeline_stage:e};
  if(e=='Perdido'){const m=prompt('Motivo da perda?');if(!m)return;u.motivo_perda=m}
  await q(sb.from('leads').update(u).eq('id',id));toast(e=='Ganho'?'Ganho! Cliente criado automaticamente.':'Movido');viewPipe()}
@@ -210,7 +219,7 @@ async function doneTask(id){await q(sb.from('tarefas').update({concluida_em:new 
 /* ---------- editar lead / CSV ---------- */
 function editLead(id){const l=S.leads.find(x=>x.id==id);modal('Editar lead',[{k:'nome_completo',l:'Nome',r:1,v:l.nome_completo},{k:'empresa',l:'Empresa',r:1,v:l.empresa},{k:'email',l:'Email',t:'email',r:1,v:l.email},{k:'telefone',l:'Telefone',r:1,v:l.telefone},
  {k:'origem',l:'Origem',t:'select',r:1,v:l.origem,o:S.origens.map(o=>[o,o])},{k:'canal_preferido',l:'Canal preferido',t:'select',v:l.canal_preferido,o:[['whatsapp','WhatsApp'],['telefone','Telefone'],['email','Email'],['presencial','Presencial']]},
- {k:'valor_estimado_kz',l:'Valor estimado (Kz)',t:'number',v:l.valor_estimado_kz},{k:'probabilidade',l:'Probabilidade (0-100)',t:'number',v:l.probabilidade},{k:'nif',l:'NIF',v:l.nif},{k:'provincia',l:'Província',v:l.provincia},{k:'setor',l:'Sector',v:l.setor}],
+ {k:'valor_estimado_kz',l:'Valor estimado (Kz)',t:'number',v:l.valor_estimado_kz},{k:'probabilidade',l:'Probabilidade (0-100)',t:'number',v:l.probabilidade},{k:'nif',l:'NIF',v:l.nif},{k:'provincia',l:'Província',v:l.provincia},{k:'setor',l:'Sector',v:l.setor},{k:'proprietario_id',l:'Responsável',t:'select',v:l.proprietario_id,o:S.users.map(u=>[u.id,u.full_name])}],
  async v=>{await q(sb.from('leads').update(v).eq('id',id));toast('Guardado');await viewLeads();openLead(id)})}
 function csv(){const c=['nome_completo','empresa','email','telefone','origem','servico_interesse','pipeline_stage','proprietario','data_entrada','valor_estimado_kz'];
  const r=[c.join(';'),...S.leads.map(l=>c.map(k=>'"'+String(l[k]??'').replace(/"/g,'""')+'"').join(';'))].join('\r\n');
@@ -220,12 +229,20 @@ function csv(){const c=['nome_completo','empresa','email','telefone','origem','s
 const ROLES=['Content Specialist','Customer Success','CMO','Admin','Gestor Comercial','Comercial','Operações'];
 async function viewAdmin(){
  $('#app').innerHTML=shell('<h2>Admin</h2><div id="ad">A carregar…</div>');
- const[U,Sv,Or]=await Promise.all([q(sb.from('users').select('*').order('full_name')),q(sb.from('servicos').select('*').order('ordem')),q(sb.from('origens').select('*').order('ordem'))]);
+ const[U,Sv,Or,AL,AC]=await Promise.all([q(sb.from('users').select('*').order('full_name')),q(sb.from('servicos').select('*').order('ordem')),q(sb.from('origens').select('*').order('ordem')),q(sb.from('leads').select('id,nome_completo,empresa').not('deleted_at','is',null)),q(sb.from('clientes').select('id,empresa').not('deleted_at','is',null))]);
  const cat=(t,R)=>`<div><h3>${t=='servicos'?'Serviços':'Origens'} <button class="b s" onclick="newCat('${t}')">+ Novo</button></h3>${R.map(r=>`<label class="it" style="display:flex;gap:8px"><input type="checkbox" style="width:auto" ${r.ativo?'checked':''} onchange="togCat('${t}','${r.id}',this.checked)">${h(r.nome)}</label>`).join('')}</div>`;
  $('#ad').innerHTML=`<h3>Utilizadores</h3><table><thead><tr><th>Nome</th><th>Email</th><th>Cargo</th><th>Activo</th></tr></thead><tbody>${U.map(u=>`<tr style="cursor:default"><td>${h(u.full_name)}</td><td>${h(u.email)}</td><td><select onchange="setUser('${u.id}',{role:this.value})">${ROLES.map(r=>`<option ${r==u.role?'selected':''}>${r}</option>`).join('')}</select></td><td><input type="checkbox" style="width:auto" ${u.ativo?'checked':''} ${u.id==S.me.id?'disabled':''} onchange="setUser('${u.id}',{ativo:this.checked})"></td></tr>`).join('')}</tbody></table>
- <p><small>Novos utilizadores continuam a ser criados no CRM actual (“Novo Utilizador”). Desactivar retira o acesso sem apagar o histórico.</small></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">${cat('servicos',Sv)}${cat('origens',Or)}</div>`}
+ <p><small>Novos utilizadores continuam a ser criados no CRM actual (“Novo Utilizador”). Desactivar retira o acesso sem apagar o histórico.</small></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">${cat('servicos',Sv)}${cat('origens',Or)}</div><h3>Arquivo (eliminados)</h3><small>Os eliminados saem das listas mas podem ser restaurados. “Apagar definitivamente” não tem volta.</small><h4>Leads</h4>${arq('leads',AL,r=>r.nome_completo+' — '+r.empresa)}<h4>Clientes</h4>${arq('clientes',AC,r=>r.empresa)}`}
 async function setUser(id,p){await q(sb.from('users').update(p).eq('id',id));toast('Actualizado');viewAdmin()}
 async function togCat(t,id,on){await q(sb.from(t).update({ativo:on}).eq('id',id));await init()}
 function newCat(t){modal('Novo registo',[{k:'nome',l:'Nome',r:1}],async v=>{await q(sb.from(t).insert({nome:v.nome,ordem:100}));toast('Criado');await init()})}
+
+/* ---------- eliminar / restaurar ---------- */
+const arq=(t,R,f)=>R.map(r=>`<div class="it" style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><span>${h(f(r))}</span><span><button class="b s g" onclick="restItem('${t}','${r.id}')">Restaurar</button> <button class="b s g" style="color:var(--r)" onclick="purgeItem('${t}','${r.id}')">Apagar definitivamente</button></span></div>`).join('')||'<p><small>Vazio.</small></p>';
+async function delItem(t,id){if(!confirm('Eliminar? Sai das listas, mas pode ser restaurado em Admin → Arquivo.'))return;
+ await q(sb.from(t).update({deleted_at:new Date().toISOString()}).eq('id',id));toast('Eliminado (recuperável em Admin → Arquivo)');go(S.view)}
+async function restItem(t,id){await q(sb.from(t).update({deleted_at:null}).eq('id',id));toast('Restaurado');viewAdmin()}
+async function purgeItem(t,id){if(prompt('Apaga também notas, contactos, reuniões e histórico. Escreva APAGAR para confirmar.')!=='APAGAR')return;
+ const r=await q(sb.from(t).delete().eq('id',id).select('id'));toast(r.length?'Apagado definitivamente':'Sem permissão para apagar',!r.length);viewAdmin()}
 init();
 </script></body></html>
